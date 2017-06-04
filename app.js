@@ -8,7 +8,7 @@ const fs = require('fs')
 const APP_TOKEN = 'EAAEi5xta9rUBAMZAoklTSPikydMZBSADVZBvVAkwP5jvhxuQwt0NMbnrGXoragec3xcCrZAMRB5OPR18vht7igKB21PZCSYZCVsk0IM0JTZCvwGAEWjZCNKCIj7D2sZChSZB1uiH3IHmcF2pmMc7g6pGYgYMZASJ34R9cm7HcUuLmp7LAZDZD';
 
 var app = express()
-const folderPath = __dirname + '/app'
+const folderPath = __dirname + '/public'
 
 app.use(bodyParser.json())
 
