@@ -1,0 +1,27 @@
+{
+  "name": "iotbot",
+  "version": "1.0.0",
+  "description": "Bot Facebook Messenger with Internet of Things",
+  "main": "app.js",
+  "scripts": {
+    "test": "iotbot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariomoren00/Iotbot.git"
+  },
+  "keywords": [
+    "iotbot"
+  ],
+  "author": "Mario Moreno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mariomoren00/Iotbot/issues"
+  },
+  "homepage": "https://github.com/mariomoren00/Iotbot#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "request": "^2.81.0"
+  }
+}
