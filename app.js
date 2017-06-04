@@ -5,11 +5,15 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const fs = require('fs')
 
+// Declare token facebook 
 const APP_TOKEN = 'EAAEi5xta9rUBAMZAoklTSPikydMZBSADVZBvVAkwP5jvhxuQwt0NMbnrGXoragec3xcCrZAMRB5OPR18vht7igKB21PZCSYZCVsk0IM0JTZCvwGAEWjZCNKCIj7D2sZChSZB1uiH3IHmcF2pmMc7g6pGYgYMZASJ34R9cm7HcUuLmp7LAZDZD';
 
 var app = express()
+
+// Declare folder path 
 const folderPath = __dirname + '/public'
 
+// Parse incoming requests
 app.use(bodyParser.json())
 
 // Declare port 
@@ -34,7 +38,7 @@ app.get('/webhook',function(req, res){
 	if(req.query['hub.verify_token'] === 'hello_token'){
 		res.send(req.query['hub.challenge'])
 	}else{
-		res.send('text');
+		res.send('Invalid token');
 	}
 })
 
@@ -55,9 +59,9 @@ app.post('/webhook',function(req, res){
 })
 
 // Get text messages
-function getMessage(event){
-	var senderID = event.sender.id
-	var messageText = event.message.text
+function getMessage(messagingEvent){
+	var senderID = messagingEvent.sender.id
+	var messageText = messagingEvent.message.text
 	
 	evaluateTextMessage(senderID, messageText)
 }
