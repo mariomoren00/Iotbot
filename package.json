@@ -4,7 +4,7 @@
   "description": "Bot Facebook Messenger with Internet of Things",
   "main": "app.js",
   "scripts": {
-    "test": "iotbot"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "johnny-five": "^0.11.1",
     "request": "^2.81.0"
   }
 }
