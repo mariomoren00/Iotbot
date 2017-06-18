@@ -1,14 +1,14 @@
 {
   "name": "iotbot",
   "version": "1.0.0",
-  "description": "Bot Facebook Messenger with Internet of Things",
+  "description": "Bot Facebook Messenger with Internet of Things to create Iotbot",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "test": "nodemon app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mariomoren00/Iotbot.git"
+    "url": "git+https://github.com/mariomoren00/iotbot.git"
   },
   "keywords": [
     "iotbot"
@@ -21,8 +21,11 @@
   "homepage": "https://github.com/mariomoren00/Iotbot#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "johnny-five": "^0.11.1",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "serialport": "^4.0.7",
+    "socket.io": "^2.0.3"
   }
 }

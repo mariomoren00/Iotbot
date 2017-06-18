@@ -1,89 +1,131 @@
 'use strict';
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const request = require('request')
-const fs = require('fs')
-const five = require("johnny-five");
-const board = new five.Board();
+require('dotenv').config();
 
+var express = require('express')
+var bodyParser = require('body-parser')
+var request = require('request')
+var fs = require('fs')
 
-// Declare token facebook
-const APP_TOKEN = 'EAAEi5xta9rUBAMZAoklTSPikydMZBSADVZBvVAkwP5jvhxuQwt0NMbnrGXoragec3xcCrZAMRB5OPR18vht7igKB21PZCSYZCVsk0IM0JTZCvwGAEWjZCNKCIj7D2sZChSZB1uiH3IHmcF2pmMc7g6pGYgYMZASJ34R9cm7HcUuLmp7LAZDZD';
+var five = require("johnny-five");
+var board = new five.Board({ port: process.env.SERIAL_PORT});
 
 var app = express()
+//var server = require('http').Server(app);
 
 // Declare folder path
-const folderPath = __dirname + '/public'
+var folderPath = __dirname + '/public'
 
 // Parse incoming requests
 app.use(bodyParser.json())
 
-// Declare port
-var PORT = process.env.PORT || 3000;
-
 // Mount your static paths
 // Renders your image, title, paragraph and index.html
 app.use(express.static(folderPath))
-
-// Start the server.
-app.listen(PORT,function(){
-	console.log('Listening localhost:3000')
-})
 
 // Read file index and send
 app.get('/',function(req, res){
 	res.sendFile(path.join(__dirname + '/index.html'));
 })
 
-// Request with method get to webhook
-app.get('/webhook',function(req, res){
-	if(req.query['hub.verify_token'] === 'hello_token'){
-		res.send(req.query['hub.challenge'])
-	}else{
-		res.send('Invalid token');
-	}
-})
+// Start board johnny five
+board.on("ready", function() {
+	console.log('Board is ready');
 
-// Request with method post to webhook
-app.post('/webhook',function(req, res){
-	var data = req.body
+	var led = new five.Led(13);
 
-	if(data.object == 'page'){
-		data.entry.forEach(function(pageEntry){
-			pageEntry.messaging.forEach(function(messagingEvent){
-				if(messagingEvent.message){
-					getMessage(messagingEvent)
-				}
+	// Request with method get to webhook
+	app.get('/webhook',function(req, res){
+		if(req.query['hub.verify_token'] === 'hello_token'){
+			res.send(req.query['hub.challenge'])
+		}else{
+			res.send('Invalid token');
+		}
+	})
+
+	// Request with method post to webhook
+	app.post('/webhook',function(req, res){
+		var data = req.body
+
+		if(data.object == 'page'){
+			data.entry.forEach(function(pageEntry){
+				pageEntry.messaging.forEach(function(messagingEvent){
+					if(messagingEvent.message){
+						getMessage(messagingEvent)
+					}
+				})
 			})
-		})
+		}
+		res.sendStatus(200)
+	})
+
+	// Get text messages
+	function getMessage(messagingEvent){
+		var senderID = messagingEvent.sender.id
+		var messageText = messagingEvent.message.text
+
+		evaluateTextMessage(senderID, messageText)
 	}
-	res.sendStatus(200)
-})
 
-// Get text messages
-function getMessage(messagingEvent){
-	var senderID = messagingEvent.sender.id
-	var messageText = messagingEvent.message.text
+	// Evaluate text message
+	function evaluateTextMessage(senderID, messageText){
+		let message = "";
+		
+		switch (messageText) {
+			case "help":
+				message = "I can help you :D";
+				break;
+			case "turn on focus":
+				led.on();
+				message = "Focus on :)";
+				break;
+			case "turn off focus":
+				led.off();
+				message = "Focus off :(";
+				break;
+			default:
+				message = "Sorry, we are out of service.";
+		}
 
-	evaluateTextMessage(senderID, messageText)
-}
-
-// Evaluate text message
-function evaluateTextMessage(senderID, messageText){
-	expr = messageText;
-	switch (expr) {
-	  case "Oranges":
-	    console.log("Oranges are $0.59 a pound.");
-	    break;
-	  case "Cherries":
-	    console.log("Cherries are $3.00 a pound.");
-	    break;
-	  case "Mangoes":
-	  case "Papayas":
-	    console.log("Mangoes and papayas are $2.79 a pound.");
-	    break;
-	  default:
-	    console.log("Sorry, we are out of " + expr + ".");
+		SendTextMessage(senderID, message);
 	}
-}
+
+	// Send text message
+	function SendTextMessage(senderID, message){
+		var messageData = {
+			recipient : {
+				id: senderID
+			},
+			message: {
+				text: message
+			}
+		}
+
+		callSendApi(messageData)
+	}
+
+	// Calling API to send message
+	function callSendApi(messageData){
+		request({
+			uri: 'https://graph.facebook.com/v2.9/me/messages',
+			qs: {access_token: process.env.APP_TOKEN},
+			method: 'POST',
+			json: messageData
+		},function(error, response, data){
+			if(error){
+				console.log('Cannot send message');
+			}
+			else{
+				console.log('Successful message');
+			}
+		});
+	}
+
+	// Start the server.
+	app.listen(process.env.PORT || 3000,function(){
+		console.log('Listening localhost:' + process.env.PORT || 3000)
+	})
+});
+
+
+
