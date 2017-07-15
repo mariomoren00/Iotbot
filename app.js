@@ -32,7 +32,8 @@ app.get('/',function(req, res){
 board.on("ready", function() {
 	console.log('Board is ready');
 
-	var led = new five.Led(13);
+	var focus_a = new five.Led(10);
+	var focus_b = new five.Led(9);
 
 	// Request with method get to webhook
 	app.get('/webhook',function(req, res){
@@ -72,15 +73,26 @@ board.on("ready", function() {
 		let message = "";
 		
 		switch (messageText) {
-			case "help":
-				message = "I can help you :D";
+			case "@help":
+				message = "I can help you :)";
 				break;
-			case "turn on focus":
-				led.on();
+			case "@focus":
+				message = "Focus a & b: 1.-  2.-  ";
+				break;
+			case "@turn_on_focus_a":
+				focus_a.on();
 				message = "Focus on :)";
 				break;
-			case "turn off focus":
-				led.off();
+			case "@turn_off_focus_a":
+				focus_a.off();
+				message = "Focus on :)";
+				break;
+			case "@turn_on_focus_b":
+				focus_b.on();
+				message = "Focus off :(";
+				break;
+			case "@turn_off_focus_b":
+				focus_b.off();
 				message = "Focus off :(";
 				break;
 			default:
