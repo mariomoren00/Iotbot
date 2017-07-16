@@ -11,7 +11,6 @@ var five = require("johnny-five");
 var board = new five.Board({ port: process.env.SERIAL_PORT});
 
 var app = express()
-//var server = require('http').Server(app);
 
 // Declare folder path
 var folderPath = __dirname + '/public'
