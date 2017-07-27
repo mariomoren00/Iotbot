@@ -31,8 +31,14 @@ app.get('/',function(req, res){
 board.on("ready", function() {
 	console.log('Board is ready');
 
-	var focus_a = new five.Led(10);
+	var focus_a = new five.Led(8);
 	var focus_b = new five.Led(9);
+	//focus_a.on();
+	//focus_b.on();
+
+	//focus_a.off();
+	//focus_b.off();
+
 
 	// Request with method get to webhook
 	app.get('/webhook',function(req, res){
@@ -70,29 +76,29 @@ board.on("ready", function() {
 	// Evaluate text message
 	function evaluateTextMessage(senderID, messageText){
 		let message = "";
-		
+
 		switch (messageText) {
 			case "@help":
 				message = "I can help you :)";
 				break;
 			case "@focus":
-				message = "Focus a & b: 1.-  2.-  ";
+				message = "Focus a & b: 1.- @turn_on_focus_a/@turn_off_focus_a 2.- @turn_on_focus_b/@turn_off_focus_b  ";
 				break;
 			case "@turn_on_focus_a":
 				focus_a.on();
-				message = "Focus on :)";
+				message = " Focus on :)";
 				break;
 			case "@turn_off_focus_a":
 				focus_a.off();
-				message = "Focus on :)";
+				message = " Focus off :)";
 				break;
 			case "@turn_on_focus_b":
 				focus_b.on();
-				message = "Focus off :(";
+				message = " Focus on :)";
 				break;
 			case "@turn_off_focus_b":
 				focus_b.off();
-				message = "Focus off :(";
+				message = " Focus off :(";
 				break;
 			default:
 				message = "Sorry, we are out of service.";
@@ -137,6 +143,3 @@ board.on("ready", function() {
 		console.log('Listening localhost:' + process.env.PORT || 3000)
 	})
 });
-
-
-
