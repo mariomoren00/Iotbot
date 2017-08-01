@@ -33,12 +33,6 @@ board.on("ready", function() {
 
 	var focus_a = new five.Led(8);
 	var focus_b = new five.Led(9);
-	//focus_a.on();
-	//focus_b.on();
-
-	//focus_a.off();
-	//focus_b.off();
-
 
 	// Request with method get to webhook
 	app.get('/webhook',function(req, res){
