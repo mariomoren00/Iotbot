@@ -1,7 +1,4 @@
-var five = require("../");
-var board = new five.Board();
-
-board.on("ready", function() {
+module.export = {
   var thermometer = new five.Thermometer({
     controller: "DHT11_I2C_NANO_BACKPACK"
   });
@@ -13,4 +10,4 @@ board.on("ready", function() {
     console.log("  kelvin            : ", this.kelvin);
     console.log("--------------------------------------");
   });
-});
+};
