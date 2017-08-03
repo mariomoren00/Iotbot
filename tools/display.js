@@ -12,12 +12,6 @@ board.on("ready", function() {
     backlight: 6,
     rows: 2,
     cols: 20
-
-
-    // Options:
-    // bitMode: 4 or 8, defaults to 4
-    // lines: number of lines, defaults to 2
-    // dots: matrix dimensions, defaults to "5x8"
   });
 
   // Tell the LCD you will use these characters:
@@ -30,7 +24,6 @@ board.on("ready", function() {
   lcd.cursor(1, 0);
 
   // Line 2: I <3 johnny-five
-  // lcd.print("I").write(7).print(" johnny-five");
   // can now be written as:
   lcd.print("I :heart: johnny-five");
 
